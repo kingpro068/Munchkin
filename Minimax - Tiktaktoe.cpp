@@ -42,14 +42,14 @@ int main()
 			print_board(a);
 			if (result == -2)
 			{
-				printf("\nDraw\n");
+				printf("\n0\n");
 				return 0;
 			}
 			else
-            {
-                printf("\nAI win\n");
-                return 0;
-            }
+            		{
+                		printf("\nAI win\n");
+                		return 0;
+			}
 		}
 
 		player(a);
@@ -59,14 +59,14 @@ int main()
 			print_board(a);
 			if (result == -2)
 			{
-				printf("\nDraw\n");
+				printf("\n0\n");
 				return 0;
 			}
 			else
-            {
-                printf("\nYou win\n");
-                return 0;
-            }
+            		{
+                		printf("\n1\n");
+                		return 0;
+            		}
 		}
 	}
 	return 0;
@@ -155,19 +155,20 @@ int compute_min_val(int a[][N_COLS])
     int i, j;
     for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
-        {
-            if (a[i][j] != 0)
-            {
-                a[i][j] = -1;
-                int min_val = compute_max_val(a);
-                if (min_val < state_val)
-                {
-                    state_val = min_val;
-                }
-                a[i][j] = 0;
-            }
-        }
-        return state_val;
+        	{
+            		if (a[i][j] != 0)
+            		{
+                		a[i][j] = -1;
+                		int min_val = compute_max_val(a);
+				a[i][j] = 0;
+                		if (min_val < state_val)
+                		{
+                    			state_val = min_val;
+                		}
+                
+            		}
+        	}		
+     return state_val;
 }
 int compute_max_val(int a[][N_COLS])
 {
@@ -178,19 +179,20 @@ int compute_max_val(int a[][N_COLS])
     int i, j;
     for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
-        {
-            if (a[i][j] != 0)
-            {
-                a[i][j] = 1;
-                int max_val = compute_min_val(a);
-                if (max_val > state_val)
-                {
-                    state_val = max_val;
-                }
-                a[i][j] = 0;
-            }
-        }
-        return state_val;
+        	{
+            		if (a[i][j] != 0)
+            		{
+                		a[i][j] = 1;
+				int max_val = compute_min_val(a);
+				a[i][j] = 0;
+                		if (max_val > state_val)
+                		{
+                    			state_val = max_val;
+                		}
+                	
+            		}
+        	}
+	return state_val;
 }
 int check_winner(int a[][N_COLS])
 {
