@@ -27,29 +27,28 @@ int main()
 	int a[N_ROWS][N_COLS];
 	int result;
 
-    for (int i = 0; i < N_ROWS; i++)
+	for (int i = 0; i < N_ROWS; i++)
 		for (int j = 0; j < N_COLS; j++)
-        {
-            a[i][j] = 0;
-        }
-
+		{
+			a[i][j] = 0;
+		}
 	while (true)
 	{
 		computer(a);
 		result = check_winner(a);
 		if (result != 0)
 		{
-			print_board(a);
+            print_board(a);
 			if (result == -2)
 			{
 				printf("\nDraw\n");
 				return 0;
 			}
 			else
-           		{
-               			 printf("\nAI win\n");
-               			 return 0;
-          		}
+			{
+				printf("\nAI win\n");
+				return 0;
+			}
 		}
 
 		player(a);
@@ -63,10 +62,10 @@ int main()
 				return 0;
 			}
 			else
-           		{
-               			printf("\nYou win\n");
-                		return 0;
-            		}
+			{
+				printf("\nYou win\n");
+				return 0;
+			}
 		}
 	}
 	return 0;
@@ -117,7 +116,7 @@ void player(int a[][N_COLS])
 		printf("O Player Turn! Please enter the value of rows and cols: ");
 		scanf("%d %d", &x, &y);
 	}
-    while ((x > 2) || (y > 2) || (x < 0) || (y < 0) || (a[x][y] != 0));
+	while ((x > 2) || (y > 2) || (x < 0) || (y < 0) || (a[x][y] != 0));
 
 	a[x][y] = -1;
 
@@ -148,49 +147,49 @@ void computer(int a[][N_COLS])
 
 int compute_min_val(int a[][N_COLS])
 {
-    int result = check_winner(a);
+	int result = check_winner(a);
 	if ((result != 0) && (result != -2))
 		return result;
-    int state_val = -99;
-    int i, j;
-    for (i = 0; i < N_COLS; i++)
+	int state_val = 99;
+	int i, j;
+	for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
-        {
-            if (a[i][j] == 0)
-            {
-                a[i][j] = -1;
-                int min_val = compute_max_val(a);
-                if (min_val < state_val)
-                {
-                    state_val = min_val;
-                }
-                a[i][j] = 0;
-            }
-        }
-        return state_val;
+		{
+			if (a[i][j] == 0)
+			{
+				a[i][j] = -1;
+				int min_val = compute_max_val(a);
+				if (min_val < state_val)
+				{
+					state_val = min_val;
+				}
+				a[i][j] = 0;
+			}
+		}
+	return state_val;
 }
 int compute_max_val(int a[][N_COLS])
 {
-    int result = check_winner(a);
+	int result = check_winner(a);
 	if ((result != 0) && (result != -2))
 		return result;
-    int state_val = 99;
-    int i, j;
-    for (i = 0; i < N_COLS; i++)
+	int state_val = -99;
+	int i, j;
+	for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
-        {
-            if (a[i][j] == 0)
-            {
-                a[i][j] = 1;
-                int max_val = compute_min_val(a);
-                if (max_val > state_val)
-                {
-                    state_val = max_val;
-                }
-                a[i][j] = 0;
-            }
-        }
-        return state_val;
+		{
+			if (a[i][j] == 0)
+			{
+				a[i][j] = 1;
+				int max_val = compute_min_val(a);
+				if (max_val > state_val)
+				{
+					state_val = max_val;
+				}
+				a[i][j] = 0;
+			}
+		}
+	return state_val;
 }
 int check_winner(int a[][N_COLS])
 {
@@ -215,11 +214,12 @@ int check_winner(int a[][N_COLS])
 
 int check_draw(int a[][N_COLS])
 {
+	int count = 0;
 	for (int i = 0; i < N_COLS; i++)
 		for (int j = 0; j < N_ROWS; j++)
 		{
-			if (a[i][j] != 0) return 1;
+			if (a[i][j] != 0) count += 1;
 		}
+	if (count == 9) return 1;
 	return 0;
 }
-
