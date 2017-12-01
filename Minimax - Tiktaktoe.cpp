@@ -46,10 +46,10 @@ int main()
 				return 0;
 			}
 			else
-            {
-                printf("\nAI win\n");
-                return 0;
-            }
+           		{
+               			 printf("\nAI win\n");
+               			 return 0;
+          		}
 		}
 
 		player(a);
@@ -63,10 +63,10 @@ int main()
 				return 0;
 			}
 			else
-            {
-                printf("\nYou win\n");
-                return 0;
-            }
+           		{
+               			printf("\nYou win\n");
+                		return 0;
+            		}
 		}
 	}
 	return 0;
@@ -156,7 +156,7 @@ int compute_min_val(int a[][N_COLS])
     for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
         {
-            if (a[i][j] != 0)
+            if (a[i][j] == 0)
             {
                 a[i][j] = -1;
                 int min_val = compute_max_val(a);
@@ -179,7 +179,7 @@ int compute_max_val(int a[][N_COLS])
     for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
         {
-            if (a[i][j] != 0)
+            if (a[i][j] == 0)
             {
                 a[i][j] = 1;
                 int max_val = compute_min_val(a);
