@@ -38,15 +38,15 @@ int main()
 		result = check_winner(a);
 		if (result != 0)
 		{
-            print_board(a);
+            	print_board(a);
 			if (result == -2)
 			{
-				printf("\nDraw\n");
+				printf("\nDraw\n\n0\n");
 				return 0;
 			}
 			else
 			{
-				printf("\nAI win\n");
+				printf("\nAI win\n\n1\n");
 				return 0;
 			}
 		}
@@ -58,12 +58,12 @@ int main()
 			print_board(a);
 			if (result == -2)
 			{
-				printf("\nDraw\n");
+				printf("\nDraw\n\n0\n");
 				return 0;
 			}
 			else
 			{
-				printf("\nYou win\n");
+				printf("\nYou win\n\n-1\n");
 				return 0;
 			}
 		}
@@ -132,7 +132,7 @@ void computer(int a[][N_COLS])
 			if (a[i][j] == 0)
 			{
 				a[i][j] = 1;
-				int tempScore = compute_max_val(a);
+				int tempScore = compute_min_val(a);
 				a[i][j] = 0;
 				if (tempScore > score)
 				{
