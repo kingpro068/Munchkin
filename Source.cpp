@@ -127,7 +127,7 @@ void player_pace(int a[][N_COLS])
 void computer_pace(int a[][N_COLS])
 {
 	int  Row = 0, Col = 0;
-	int score = -10;
+	int score = 10;
 	int i, j;
 	for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
@@ -137,7 +137,7 @@ void computer_pace(int a[][N_COLS])
 				a[i][j] = 1;
 				int tempScore = compute_min_val(a);
 				a[i][j] = 0;
-				if (tempScore > score)
+				if (tempScore < score)
 				{
 					score = tempScore;
 					Row = i;
