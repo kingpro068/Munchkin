@@ -16,9 +16,9 @@ MSSV: 1753020
 //KHAI BÁO CÁC PROTOTYPE
 void print_board(int a[][N_COLS]);
 int check_winner(int a[][N_COLS]);
-int check_draw(int a[][N_COLS]);
-void computer(int a[][N_COLS]);
-void player(int a[][N_COLS]);
+int check_full_board(int a[][N_COLS]);
+void computer_turn(int a[][N_COLS]);
+void player_turn(int a[][N_COLS]);
 int compute_min_val(int a[][N_COLS]);
 int compute_max_val(int a[][N_COLS]);
 
@@ -30,44 +30,47 @@ int main()
 	for (int i = 0; i < N_ROWS; i++)
 		for (int j = 0; j < N_COLS; j++)
 		{
-			a[i][j] = 0;
+			a[i][j] = 0;                    //Làm trống bàn cờ
 		}
+    printf("You are 'O' player!\n");
 	while (true)
 	{
-		computer(a);
+	    //Lượt chơi của máy
+		computer_turn(a);
 		result = check_winner(a);
 		if (result != 0)
 		{
             print_board(a);
 			if (result == -2)
 			{
-				printf("\nDraw\n");
+				printf("\n0\n");
 				return 0;
 			}
 			else
 			{
-				printf("\nAI win\n");
+				printf("\n1\n");
 				return 0;
 			}
 		}
-
-		player(a);
+        //Lượt chơi của người chơi
+		player_turn(a);
 		result = check_winner(a);
 		if (result != 0)
 		{
 			print_board(a);
 			if (result == -2)
 			{
-				printf("\nDraw\n");
+				printf("\n0\n");
 				return 0;
 			}
 			else
 			{
-				printf("\nYou win\n");
+				printf("\n-1\n");
 				return 0;
 			}
 		}
 	}
+	system("pause");
 	return 0;
 }
 
@@ -107,13 +110,13 @@ void print_board(int a[][N_COLS])
 	}
 	printf("\n");
 }
-void player(int a[][N_COLS])
+void player_turn(int a[][N_COLS])
 {
 	print_board(a);
 	int x, y;
 	do
 	{
-		printf("O Player Turn! Please enter the value of rows and cols: ");
+		printf("Player Turn! Please enter the value of rows and cols: ");
 		scanf("%d %d", &x, &y);
 	}
 	while ((x > 2) || (y > 2) || (x < 0) || (y < 0) || (a[x][y] != 0));
@@ -121,9 +124,9 @@ void player(int a[][N_COLS])
 	a[x][y] = -1;
 
 }
-void computer(int a[][N_COLS])
+void computer_turn(int a[][N_COLS])
 {
-	int moveX = -1, moveY = -1;
+	int Ox = -1, Oy = -1;
 	int score = -99;
 	int i, j;
 	for (i = 0; i < N_COLS; i++)
@@ -131,18 +134,18 @@ void computer(int a[][N_COLS])
 		{
 			if (a[i][j] == 0)
 			{
-				a[i][j] = 1;
-				int tempScore = compute_min_val(a);
-				a[i][j] = 0;
-				if (tempScore > score)
+				a[i][j] = 1;                                //Đi thử
+				int maxScore = compute_min_val(a);         //Giả định bước đi của người chơi
+				a[i][j] = 0;                                //Trả về giá trị ban đầu
+				if (maxScore > score)
 				{
-					score = tempScore;
-					moveX = i;
-					moveY = j;
+					score = maxScore;                      //Điểm tốt nhất khi đi nước này
+					Ox = i;                                 //Gán tọa độ của hàng
+					Oy = j;                                 //Gán tọa độ của cột
 				}
 			}
 		}
-	a[moveX][moveY] = 1;
+	a[Ox][Oy] = 1;
 }
 
 int compute_min_val(int a[][N_COLS])            //Hàm tính giá trị min của của trạng thái
@@ -159,19 +162,19 @@ int compute_min_val(int a[][N_COLS])            //Hàm tính giá trị min củ
 			{
 				a[i][j] = -1;                           //Đi thử
 				int min_val = compute_max_val(a);       //Giả định nước đi đối thủ
-				if (min_val < state_val)
+				if (min_val < state_val)                //Nếu nước đi giả định có giá trị nhỏ hơn giá trị trạng thái ban đầu thì gán nhỏ nhất cho giá trị của trạng thái
 				{
-					state_val = min_val;            
+					state_val = min_val;
 				}
-				a[i][j] = 0;                        //Trả về giá trị ban đầu
+				a[i][j] = 0;                            //Trả về giá trị ban đầu
 			}
 		}
-	return state_val;
+	return state_val;                                   //Trả về điểm của ô trạng thái
 }
-int compute_max_val(int a[][N_COLS])           //Hàm tính giá trị max của trạng thái
+int compute_max_val(int a[][N_COLS])                    //Hàm tính giá trị max của trạng thái
 {
 	int result = check_winner(a);
-	if ((result != 0) && (result != -2))
+	if ((result != 0) && (result != -2))                     //Tương tự như hàm compute_min_val
 		return result;
 	int state_val = -99;
 	int i, j;
@@ -207,12 +210,12 @@ int check_winner(int a[][N_COLS])       //Hàm kiểm tra điều khiện thắn
 	else if ((a[2][0] == a[1][1]) && (a[1][1] == a[0][2]) && (a[1][1] != 0))       //Kiểm tra điều kiện thắng theo đường chéo phụ
 		return a[2][0];
 
-	else if (check_draw(a) == 1) return -2;                    //Nếu không thắng thì return 2;
+	else if (check_full_board(a) == 1) return -2;                    //Nếu bàn cờ đầy và không ai thắng thì hòa, trả về -2;
 
 	else return 0;                                              //Nếu vẫn chưa kết thúc game thì trả về 0
 }
 
-int check_draw(int a[][N_COLS])                 //Hàm kiểm tra điều kiện hòa
+int check_full_board(int a[][N_COLS])                 //Hàm kiểm tra bàn cờ đã được đánh hết chưa
 {
 	int count = 0;
 	for (int i = 0; i < N_COLS; i++)
@@ -220,6 +223,6 @@ int check_draw(int a[][N_COLS])                 //Hàm kiểm tra điều kiện
 		{
 			if (a[i][j] != 0) count += 1;       //Nếu tại ô đã được đánh thì tăng biến đếm count
 		}
-	if (count == 9) return 1;                   //Nếu cả 9 ô đã được đánh thì là hòa , trả về 1
+	if (count == 9) return 1;                   //Nếu cả 9 ô đã được đánh thì bàn cờ đầy , trả về 1
 	return 0;
 }
