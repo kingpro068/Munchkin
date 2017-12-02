@@ -127,7 +127,7 @@ void player_pace(int a[][N_COLS])
 void computer_pace(int a[][N_COLS])
 {
 	int  Row = 0, Col = 0;
-	int score = 10;
+	int score = -10;
 	int i, j;
 	for (i = 0; i < N_COLS; i++)
 		for (j = 0; j < N_ROWS; j++)
@@ -137,7 +137,7 @@ void computer_pace(int a[][N_COLS])
 				a[i][j] = 1;
 				int tempScore = compute_min_val(a);
 				a[i][j] = 0;
-				if (tempScore < score)
+				if (tempScore > score)
 				{
 					score = tempScore;
 					Row = i;
@@ -152,7 +152,7 @@ void computer_pace(int a[][N_COLS])
 int compute_min_val(int a[][N_COLS])
 {
 	int point = result_check(a);
-	if ((point != 0) && (point != 2))
+	if (point != -8)
 		return point;
 	int state_val = 10;
 	int i, j;
@@ -177,7 +177,7 @@ int compute_min_val(int a[][N_COLS])
 int compute_max_val(int a[][N_COLS])
 {
 	int point = result_check(a);
-	if ((point != 0) && (point != 2))
+	if (point != -8)
 		return point;
 	int state_val = -10;
 	int i, j;
@@ -234,6 +234,6 @@ int result_check(int a[][N_COLS])
 		return a[0][2];
 	// Bàn cờ đã đầy mà chưa có người chơi nào thắng.
 	else if (board_full(a) == 1)
-		return 2;
-	else return 0;
+		return 0;
+	else return -8;
 }
